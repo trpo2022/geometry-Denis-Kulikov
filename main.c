@@ -206,10 +206,17 @@ int fun_check_intersection(struct circle Acir, struct circle Bcir)
 int main()
 {
     int* figur = malloc(N * sizeof(int));
-    int i, count_exit = 0, num = 0;
+    int i, j, count_exit = 0, num = 0;
 
     struct circle circle_pos[N];
     struct info area_perimetr[N];
+
+    int info_intersection[N][N];
+    for (i = 0; i < N; i++) {
+        for (j = 0; j < N; j++) {
+            info_intersection[i][j] = 0;
+        }
+    }
 
     while (count_exit != 1) {
         fun_figur_check(num, figur);
@@ -229,11 +236,19 @@ int main()
     num--;
 
     for (i = 0; i < num; i++) {
-        area_perimetr[i] = fun_area_perimetr(circle_pos[i]);
+        for (j = 0; j < num; j++) {
+            if (i == j) {
+                j++;
+                if (j == num)
+                    break;
+            }
+            info_intersection[i][j]
+                    = fun_check_intersection(circle_pos[i], circle_pos[j]);
+        }
     }
 
     for (i = 0; i < num; i++) {
-        printf("\n%f  %f", area_perimetr[i].perimeter, area_perimetr[i].area);
+        area_perimetr[i] = fun_area_perimetr(circle_pos[i]);
     }
 
     return 0;
