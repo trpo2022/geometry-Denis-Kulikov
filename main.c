@@ -184,6 +184,25 @@ struct info fun_area_perimetr(struct circle cir)
     return number;
 }
 
+int fun_check_intersection(struct circle Acir, struct circle Bcir)
+{
+    double temp,
+            a
+            = (Acir.point[0] - Bcir.point[0]) * (Acir.point[0] - Bcir.point[0])
+            + (Acir.point[1] - Bcir.point[1]) * (Acir.point[1] - Bcir.point[1]);
+    temp = a;
+    if (temp != 0) {
+        for (int i = 0; i < 7; i++)
+            a = (a + temp / a) / 2;
+    }
+
+    if (a <= Acir.radius + Bcir.radius) {
+        return 1;
+    }
+
+    return 0;
+}
+
 int main()
 {
     int* figur = malloc(N * sizeof(int));
