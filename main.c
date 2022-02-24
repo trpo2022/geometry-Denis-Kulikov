@@ -34,7 +34,7 @@ void fun_figur_check(int num, int* figur) // определение фигуры
                 printf("Тип фигуры не распознан! Ожидаемый тип: 'circle'\n");
             }
             if (end != 2)
-                printf("Нажмите 'enter', что закончить, или продолжите вводить "
+                printf("Нажмите 'enter', чтобы закончить, или продолжите вводить "
                        "данные.\n");
             if (end == 2) {
                 figur[num] = 3;
@@ -210,6 +210,9 @@ int main()
 
     struct circle circle_pos[N];
     struct info area_perimetr[N];
+
+    printf("Уровень: Easy\nПравило ввода данных: тип(координата X, координата Y, радиус)\nПример: circle(1 2 3),\nОдна фигура занимает ровно одну строку.\n");
+    printf("Пробельных символов может быть любым символом кроме: '.', '-' и цифр.\n\n");
 
     int info_intersection[N][N];
     for (i = 0; i < N; i++) {
