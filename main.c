@@ -11,8 +11,10 @@ struct circle {
 void fun_figur_check(int num, int* figur) // определение фигуры
 {
     char circle_name[] = {"circle"}, type_fig[7];
+    type_fig[6] = '\0';
     char symbol = 'a';
     int i = 0, end = 0;
+    type_fig[0] = 0;
 
     for (int j = 0; j < 6; j++) {
         type_fig[j] = 0;
@@ -36,6 +38,11 @@ void fun_figur_check(int num, int* figur) // определение фигуры
             end = 0;
         }
         if (symbol >= 97 && symbol <= 122) {
+            type_fig[i] = symbol;
+            i++;
+        }
+        if (symbol >= 66 && symbol <= 90) {
+            symbol += 'a' - 'A';
             type_fig[i] = symbol;
             i++;
         }
