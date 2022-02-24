@@ -251,5 +251,28 @@ int main()
         area_perimetr[i] = fun_area_perimetr(circle_pos[i]);
     }
 
+    for (i = 0; i < num; i++) {
+        printf("%d. circle(%.1f %.1f %.1f)\n\tperimeter = %f\n\tarea = "
+               "%f\n\tintersects:\n",
+               i + 1,
+               circle_pos[i].point[0],
+               circle_pos[i].point[1],
+               circle_pos[i].radius,
+               area_perimetr[i].perimeter,
+               area_perimetr[i].area);
+        for (j = 0; j < num; j++) {
+            if (i == j) {
+                j++;
+                if (j == num)
+                    break;
+            }
+            if (info_intersection[i][j] == 1)
+                printf("\t   %d. circle\n", j + 1);
+        }
+        printf("\n");
+    }
+
+    i = getchar();
+
     return 0;
 }
