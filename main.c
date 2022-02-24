@@ -9,6 +9,11 @@ struct circle {
     double radius;
 };
 
+struct info {
+    double perimeter;
+    double area;
+};
+
 void fun_figur_check(int num, int* figur) // определение фигуры
 {
     char circle_name[] = {"circle"}, type_fig[7];
@@ -170,12 +175,22 @@ struct circle fun_pos_cir()
     return temp_cir;
 }
 
+struct info fun_area_perimetr(struct circle cir)
+{
+    struct info number;
+    number.perimeter = 2 * 3.14 * cir.radius;
+    number.area = 3.14 * cir.radius * cir.radius;
+
+    return number;
+}
+
 int main()
 {
     int* figur = malloc(N * sizeof(int));
-    int count_exit = 0, num = 0;
+    int i, count_exit = 0, num = 0;
 
     struct circle circle_pos[N];
+    struct info area_perimetr[N];
 
     while (count_exit != 1) {
         fun_figur_check(num, figur);
@@ -193,6 +208,14 @@ int main()
         num++;
     }
     num--;
+
+    for (i = 0; i < num; i++) {
+        area_perimetr[i] = fun_area_perimetr(circle_pos[i]);
+    }
+
+    for (i = 0; i < num; i++) {
+        printf("\n%f  %f", area_perimetr[i].perimeter, area_perimetr[i].area);
+    }
 
     return 0;
 }
