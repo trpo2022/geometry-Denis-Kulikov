@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #define N 10 // максимальное количество фигур
+#define LENGTH_ARG 100
 
 struct circle {
     double point[2];
@@ -61,12 +62,120 @@ void fun_figur_check(int num, int* figur) // определение фигуры
     }
 }
 
+void arg_del(char* a, int l)
+{
+    for (int i = 0; i < l; i++)
+        a[i] = '\0';
+}
+
+struct circle fun_pos_cir()
+{
+    struct circle temp_cir;
+    char symbol;
+    int j = 0, count = 1, changes = 0;
+    int com[] = {0, 0, 0}, minus[] = {0, 0, 0};
+    char arg[LENGTH_ARG];
+    arg[LENGTH_ARG - 1] = '\0';
+
+    symbol = getchar();
+    if (symbol != '(') {
+        printf("Ошибка: токены должны быть заключены в скобки!");
+        return temp_cir;
+    }
+
+    j = 0;
+    arg_del(arg, LENGTH_ARG);
+    while (count == 1 && j < LENGTH_ARG) {
+        symbol = getchar();
+        if (symbol == 46)
+            com[count]++;
+        if (symbol == 45)
+            minus[count]++;
+        if (symbol == 45 || symbol == 46 || (symbol >= 48 && symbol <= 57)) {
+            arg[j] = symbol;
+            j++;
+            changes++;
+        } else if (changes != 0) {
+            changes = -1;
+        }
+        if (changes == -1) {
+            temp_cir.point[0] = atof(arg);
+            if (com[count] > 1)
+                printf("Ошибка в написании веществвенного числа!\n");
+            if (minus[count] > 1)
+                printf("Ошибка: записан лишний минус!\n");
+            count++;
+            changes = 0;
+        }
+    }
+
+    j = 0;
+    arg_del(arg, LENGTH_ARG);
+    while (count == 2 && j < LENGTH_ARG) {
+        symbol = getchar();
+        if (symbol == 46)
+            com[count]++;
+        if (symbol == 45)
+            minus[count]++;
+        if (symbol == 45 || symbol == 46 || (symbol >= 48 && symbol <= 57)) {
+            arg[j] = symbol;
+            j++;
+            changes++;
+        } else if (changes != 0) {
+            changes = -1;
+        }
+        if (changes == -1) {
+            temp_cir.point[1] = atof(arg);
+            if (com[count] > 1)
+                printf("Ошибка в написании веществвенного числа!\n");
+            if (minus[count] > 1)
+                printf("Ошибка: записан лишний минус!\n");
+            count++;
+            changes = 0;
+        }
+    }
+
+    j = 0;
+    arg_del(arg, LENGTH_ARG);
+    while (count == 3 && j < LENGTH_ARG) {
+        symbol = getchar();
+        if (symbol == 46)
+            com[count]++;
+        if (symbol == 45)
+            minus[count]++;
+        if (symbol == 45 || symbol == 46 || (symbol >= 48 && symbol <= 57)) {
+            arg[j] = symbol;
+            j++;
+            changes++;
+        } else if (changes != 0) {
+            changes = -1;
+        }
+        if (changes == -1) {
+            while (symbol == ' ') {
+                symbol = getchar();
+            }
+            if (symbol != ')') {
+                printf("Предупреждение: токены должны быть заключены в "
+                       "скобки!\n");
+            }
+            temp_cir.radius = atof(arg);
+            if (com[count] > 1)
+                printf("Ошибка в написании веществвенного числа!\n");
+            if (minus[count] > 1)
+                printf("Ошибка: отрицательный радиус!\n");
+            return temp_cir;
+        }
+    }
+
+    return temp_cir;
+}
+
 int main()
 {
     int* figur = malloc(N * sizeof(int));
     int count_exit = 0, num = 0;
 
-    // struct circle circle_pos[N];
+    struct circle circle_pos[N];
 
     while (count_exit != 1) {
         fun_figur_check(num, figur);
@@ -78,13 +187,12 @@ int main()
             count_exit = 1;
         }
 
+        if (figur[num] == 1) {
+            circle_pos[num] = fun_pos_cir();
+        }
         num++;
     }
     num--;
-
-    for (int i = 0; i < num; i++) {
-        printf("\n %d", figur[i]);
-    }
 
     return 0;
 }
