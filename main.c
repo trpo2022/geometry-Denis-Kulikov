@@ -33,9 +33,9 @@ void fun_figur_check(int num, int* figur) // определение фигуры
             if (type_fig[0] != 0) {
                 printf("Тип фигуры не распознан! Ожидаемый тип: 'circle'\n");
             }
-            if (end != 2)
-                printf("Нажмите 'enter', чтобы закончить, или продолжите вводить "
-                       "данные.\n");
+            // if (end != 2)
+            //     printf("Нажмите 'enter', чтобы закончить, или продолжите вводить "
+            //            "данные.\n");
             if (end == 2) {
                 figur[num] = 3;
                 break;
@@ -77,7 +77,7 @@ struct circle fun_pos_cir()
 {
     struct circle temp_cir;
     char symbol;
-    int j = 0, count = 1, changes = 0;
+    int j = 0, count = 1, changes = 0, error = 0;
     int com[] = {0, 0, 0}, minus[] = {0, 0, 0};
     char arg[LENGTH_ARG];
     arg[LENGTH_ARG - 1] = '\0';
@@ -85,6 +85,7 @@ struct circle fun_pos_cir()
     symbol = getchar();
     if (symbol != '(') {
         printf("Ошибка: токены должны быть заключены в скобки!");
+        temp_cir.radius = 0;
         return temp_cir;
     }
 
@@ -105,10 +106,15 @@ struct circle fun_pos_cir()
         }
         if (changes == -1) {
             temp_cir.point[0] = atof(arg);
-            if (com[count] > 1)
+            if (com[count] > 1){
+                error = 1;
                 printf("Ошибка в написании веществвенного числа!\n");
-            if (minus[count] > 1)
+            }
+                
+            if (minus[count] > 1){
+                error = 1;
                 printf("Ошибка: записан лишний минус!\n");
+            }
             count++;
             changes = 0;
         }
@@ -131,10 +137,14 @@ struct circle fun_pos_cir()
         }
         if (changes == -1) {
             temp_cir.point[1] = atof(arg);
-            if (com[count] > 1)
+            if (com[count] > 1){
+                error = 1;
                 printf("Ошибка в написании веществвенного числа!\n");
-            if (minus[count] > 1)
+            }
+            if (minus[count] > 1){
+                error = 1;
                 printf("Ошибка: записан лишний минус!\n");
+            }
             count++;
             changes = 0;
         }
@@ -160,18 +170,23 @@ struct circle fun_pos_cir()
                 symbol = getchar();
             }
             if (symbol != ')') {
-                printf("Предупреждение: токены должны быть заключены в "
+                printf("Ошибка: токены должны быть заключены в "
                        "скобки!\n");
             }
             temp_cir.radius = atof(arg);
-            if (com[count] > 1)
+            if (com[count] > 1){
+                error = 1;
                 printf("Ошибка в написании веществвенного числа!\n");
-            if (minus[count] > 1)
+            }
+            if (minus[count] > 0){
+                error = 1;
                 printf("Ошибка: отрицательный радиус!\n");
-            return temp_cir;
+            }
+            count++;
         }
     }
-
+    if (error == 1)
+        temp_cir.radius = 0;
     return temp_cir;
 }
 
@@ -231,9 +246,10 @@ int main()
             count_exit = 1;
         }
 
-        if (figur[num] == 1) {
+        if (figur[num] == 1) 
             circle_pos[num] = fun_pos_cir();
-        }
+        if (circle_pos[num].radius == 0)
+                num--;
         num++;
     }
     num--;
