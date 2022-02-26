@@ -1,7 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #define N 10 // максимальное количество фигур
+#define CIRCLE_WORD 6
+#define LOWER_CASE 97
+#define UPPER_CASE 66
+
+
 #define LENGTH_ARG 100
 
 struct circle {
@@ -17,25 +23,22 @@ struct info {
 void fun_figur_check(int num, int* figur) // определение фигуры
 {
     char circle_name[] = {"circle"}, type_fig[7];
-    type_fig[6] = '\0';
+    type_fig[CIRCLE_WORD] = '\0';
     char symbol = 'a';
-    int i = 0, end = 0;
+    int letter_count = 0, end = 0;
     type_fig[0] = 0;
 
     for (int j = 0; j < 6; j++) {
         type_fig[j] = 0;
     }
 
-    while (i < 6) {
+    while (letter_count < 6) {
         symbol = getchar();
         if (symbol == '\n') {
             end++;
             if (type_fig[0] != 0) {
                 printf("Тип фигуры не распознан! Ожидаемый тип: 'circle'\n");
             }
-            // if (end != 2)
-            //     printf("Нажмите 'enter', чтобы закончить, или продолжите вводить "
-            //            "данные.\n");
             if (end == 2) {
                 figur[num] = 3;
                 break;
@@ -43,20 +46,20 @@ void fun_figur_check(int num, int* figur) // определение фигуры
         } else {
             end = 0;
         }
-        if (symbol >= 97 && symbol <= 122) {
-            type_fig[i] = symbol;
-            i++;
+        if (symbol >= LOWER_CASE && symbol <= LOWER_CASE + 25) {
+            type_fig[letter_count] = symbol;
+            letter_count++;
         }
-        if (symbol >= 66 && symbol <= 90) {
+        if (symbol >= UPPER_CASE && symbol <= UPPER_CASE + 25) {
             symbol += 'a' - 'A';
-            type_fig[i] = symbol;
-            i++;
+            type_fig[letter_count] = symbol;
+            letter_count++;
         }
     }
-    type_fig[i] = '\0';
+    type_fig[letter_count] = '\0';
 
-    for (int j = 0; j < 6 && type_fig != '\0' && figur[num] == 0; j++) {
-        if (type_fig[j] != circle_name[j]) {
+    for (letter_count = 0; letter_count < 6 && type_fig != '\0' && figur[num] == 0; letter_count++) {
+        if (type_fig[letter_count] != circle_name[letter_count]) {
             figur[num] = 2;
             printf("%s", type_fig);
             printf("Тип фигуры не распознан! Ожидаемый тип: 'circle'\n");
@@ -84,9 +87,8 @@ struct circle fun_pos_cir()
 
     symbol = getchar();
     if (symbol != '(') {
-        printf("Ошибка: токены должны быть заключены в скобки!");
-        temp_cir.radius = 0;
-        return temp_cir;
+        printf("Ошибка: токены должны быть заключены в скобки!\n");
+        error = 1;
     }
 
     j = 0;
@@ -170,7 +172,7 @@ struct circle fun_pos_cir()
                 symbol = getchar();
             }
             if (symbol != ')') {
-                printf("Ошибка: токены должны быть заключены в "
+                printf("Предупреждение: токены должны быть заключены в "
                        "скобки!\n");
             }
             temp_cir.radius = atof(arg);
@@ -193,8 +195,8 @@ struct circle fun_pos_cir()
 struct info fun_area_perimetr(struct circle cir)
 {
     struct info number;
-    number.perimeter = 2 * 3.14 * cir.radius;
-    number.area = 3.14 * cir.radius * cir.radius;
+    number.perimeter = 2 * M_PI * cir.radius;
+    number.area = M_PI * cir.radius * cir.radius;
 
     return number;
 }
@@ -246,12 +248,14 @@ int main()
             count_exit = 1;
         }
 
-        if (figur[num] == 1) 
+        if (figur[num] == 1) {
             circle_pos[num] = fun_pos_cir();
-        if (circle_pos[num].radius == 0)
-                num--;
+            if (circle_pos[num].radius == 0)
+                    num--;
+        }
         num++;
     }
+
     num--;
 
     for (i = 0; i < num; i++) {
@@ -291,7 +295,6 @@ int main()
         printf("\n");
     }
 
-    i = getchar();
 
     return 0;
 }
