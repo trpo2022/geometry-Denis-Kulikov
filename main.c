@@ -1,17 +1,23 @@
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
 #define N 10 // максимальное количество фигур
-#define CIRCLE_WORD 6
+#define CIRCLE_WORD 7
 #define LOWER_CASE 97
 #define UPPER_CASE 66
-
-
+#define COORDINATES_X_Y 2
+#define MAX_ITERATION 7
+#define FIGUR_CIRCLE 1
+#define FIGUR_NO_CIRCLE 2
+#define FIGUR_END 3
+#define DOT 46
+#define MINUS_SYM 45
+#define NUMBER_0 48
 #define LENGTH_ARG 100
 
 struct circle {
-    double point[2];
+    double point[COORDINATES_X_Y];
     double radius;
 };
 
@@ -20,19 +26,19 @@ struct info {
     double area;
 };
 
-void fun_figur_check(int num, int* figur) // определение фигуры
+void fun_figur_check(int num, int* figur)
 {
-    char circle_name[] = {"circle"}, type_fig[7];
-    type_fig[CIRCLE_WORD] = '\0';
+    char circle_name[] = {"circle"}, type_fig[CIRCLE_WORD];
+    type_fig[CIRCLE_WORD - 1] = '\0';
     char symbol = 'a';
     int letter_count = 0, end = 0;
     type_fig[0] = 0;
 
-    for (int j = 0; j < 6; j++) {
+    for (int j = 0; j < CIRCLE_WORD - 1; j++) {
         type_fig[j] = 0;
     }
 
-    while (letter_count < 6) {
+    while (letter_count < CIRCLE_WORD - 1) {
         symbol = getchar();
         if (symbol == '\n') {
             end++;
@@ -40,7 +46,7 @@ void fun_figur_check(int num, int* figur) // определение фигуры
                 printf("Тип фигуры не распознан! Ожидаемый тип: 'circle'\n");
             }
             if (end == 2) {
-                figur[num] = 3;
+                figur[num] = FIGUR_END;
                 break;
             }
         } else {
@@ -58,29 +64,31 @@ void fun_figur_check(int num, int* figur) // определение фигуры
     }
     type_fig[letter_count] = '\0';
 
-    for (letter_count = 0; letter_count < 6 && type_fig != '\0' && figur[num] == 0; letter_count++) {
+    for (letter_count = 0;
+         letter_count < CIRCLE_WORD - 1 && type_fig != '\0' && figur[num] == 0;
+         letter_count++) {
         if (type_fig[letter_count] != circle_name[letter_count]) {
-            figur[num] = 2;
+            figur[num] = FIGUR_NO_CIRCLE;
             printf("%s", type_fig);
             printf("Тип фигуры не распознан! Ожидаемый тип: 'circle'\n");
             break;
         } else {
-            figur[num] = 1;
+            figur[num] = FIGUR_CIRCLE;
         }
     }
 }
 
-void arg_del(char* a, int l)
+void arg_del(char* arg, int length)
 {
-    for (int i = 0; i < l; i++)
-        a[i] = '\0';
+    for (int element = 0; element < length; element++)
+        arg[element] = '\0';
 }
 
 struct circle fun_pos_cir()
 {
     struct circle temp_cir;
     char symbol;
-    int j = 0, count = 1, changes = 0, error = 0;
+    int symbol_number = 0, count = 1, changes = 0, error = 0;
     int com[] = {0, 0, 0}, minus[] = {0, 0, 0};
     char arg[LENGTH_ARG];
     arg[LENGTH_ARG - 1] = '\0';
@@ -91,29 +99,30 @@ struct circle fun_pos_cir()
         error = 1;
     }
 
-    j = 0;
+    symbol_number = 0;
     arg_del(arg, LENGTH_ARG);
-    while (count == 1 && j < LENGTH_ARG) {
+    while (count == 1 && symbol_number < LENGTH_ARG) {
         symbol = getchar();
-        if (symbol == 46)
+        if (symbol == DOT)
             com[count]++;
-        if (symbol == 45)
+        if (symbol == MINUS_SYM)
             minus[count]++;
-        if (symbol == 45 || symbol == 46 || (symbol >= 48 && symbol <= 57)) {
-            arg[j] = symbol;
-            j++;
+        if (symbol == DOT || symbol == MINUS_SYM
+            || (symbol >= NUMBER_0 && symbol <= NUMBER_0 + 9)) {
+            arg[symbol_number] = symbol;
+            symbol_number++;
             changes++;
         } else if (changes != 0) {
             changes = -1;
         }
         if (changes == -1) {
             temp_cir.point[0] = atof(arg);
-            if (com[count] > 1){
+            if (com[count] > 1) {
                 error = 1;
                 printf("Ошибка в написании веществвенного числа!\n");
             }
-                
-            if (minus[count] > 1){
+
+            if (minus[count] > 1) {
                 error = 1;
                 printf("Ошибка: записан лишний минус!\n");
             }
@@ -122,28 +131,29 @@ struct circle fun_pos_cir()
         }
     }
 
-    j = 0;
+    symbol_number = 0;
     arg_del(arg, LENGTH_ARG);
-    while (count == 2 && j < LENGTH_ARG) {
+    while (count == 2 && symbol_number < LENGTH_ARG) {
         symbol = getchar();
-        if (symbol == 46)
+        if (symbol == DOT)
             com[count]++;
-        if (symbol == 45)
+        if (symbol == MINUS_SYM)
             minus[count]++;
-        if (symbol == 45 || symbol == 46 || (symbol >= 48 && symbol <= 57)) {
-            arg[j] = symbol;
-            j++;
+        if (symbol == DOT || symbol == MINUS_SYM
+            || (symbol >= NUMBER_0 && symbol <= NUMBER_0 + 9)) {
+            arg[symbol_number] = symbol;
+            symbol_number++;
             changes++;
         } else if (changes != 0) {
             changes = -1;
         }
         if (changes == -1) {
             temp_cir.point[1] = atof(arg);
-            if (com[count] > 1){
+            if (com[count] > 1) {
                 error = 1;
                 printf("Ошибка в написании веществвенного числа!\n");
             }
-            if (minus[count] > 1){
+            if (minus[count] > 1) {
                 error = 1;
                 printf("Ошибка: записан лишний минус!\n");
             }
@@ -152,17 +162,18 @@ struct circle fun_pos_cir()
         }
     }
 
-    j = 0;
+    symbol_number = 0;
     arg_del(arg, LENGTH_ARG);
-    while (count == 3 && j < LENGTH_ARG) {
+    while (count == 3 && symbol_number < LENGTH_ARG) {
         symbol = getchar();
-        if (symbol == 46)
+        if (symbol == DOT)
             com[count]++;
-        if (symbol == 45)
+        if (symbol == MINUS_SYM)
             minus[count]++;
-        if (symbol == 45 || symbol == 46 || (symbol >= 48 && symbol <= 57)) {
-            arg[j] = symbol;
-            j++;
+        if (symbol == DOT || symbol == MINUS_SYM
+            || (symbol >= NUMBER_0 && symbol <= NUMBER_0 + 9)) {
+            arg[symbol_number] = symbol;
+            symbol_number++;
             changes++;
         } else if (changes != 0) {
             changes = -1;
@@ -176,11 +187,11 @@ struct circle fun_pos_cir()
                        "скобки!\n");
             }
             temp_cir.radius = atof(arg);
-            if (com[count] > 1){
+            if (com[count] > 1) {
                 error = 1;
                 printf("Ошибка в написании веществвенного числа!\n");
             }
-            if (minus[count] > 0){
+            if (minus[count] > 0) {
                 error = 1;
                 printf("Ошибка: отрицательный радиус!\n");
             }
@@ -204,16 +215,16 @@ struct info fun_area_perimetr(struct circle cir)
 int fun_check_intersection(struct circle Acir, struct circle Bcir)
 {
     double temp,
-            a
+            distance
             = (Acir.point[0] - Bcir.point[0]) * (Acir.point[0] - Bcir.point[0])
             + (Acir.point[1] - Bcir.point[1]) * (Acir.point[1] - Bcir.point[1]);
-    temp = a;
+    temp = distance;
     if (temp != 0) {
-        for (int i = 0; i < 7; i++)
-            a = (a + temp / a) / 2;
+        for (int iteration = 0; iteration < MAX_ITERATION; iteration++)
+            distance = (distance + temp / distance) / 2;
     }
 
-    if (a <= Acir.radius + Bcir.radius) {
+    if (distance <= Acir.radius + Bcir.radius) {
         return 1;
     }
 
@@ -228,30 +239,33 @@ int main()
     struct circle circle_pos[N];
     struct info area_perimetr[N];
 
-    printf("Уровень: Easy\nПравило ввода данных: тип(координата X, координата Y, радиус)\nПример: circle(1 2 3),\nОдна фигура занимает ровно одну строку.\n");
-    printf("Пробельных символов может быть любым символом кроме: '.', '-' и цифр.\n\n");
+    printf("Уровень: Easy\nПравило ввода данных: тип(координата X, координата "
+           "Y, радиус)\nПример: circle(1 2 3),\nОдна фигура занимает ровно "
+           "одну строку.\n");
+    printf("Пробельным символом может быть любой символом кроме: '.', '-' и "
+           "цифр.\n\n");
 
     int info_intersection[N][N];
-    for (i = 0; i < N; i++) {
-        for (j = 0; j < N; j++) {
-            info_intersection[i][j] = 0;
+    for (int first_figur = 0; first_figur < N; first_figur++) {
+        for (int second_figur = 0; second_figur < N; second_figur++) {
+            info_intersection[first_figur][second_figur] = 0;
         }
     }
 
     while (count_exit != 1) {
         fun_figur_check(num, figur);
-        if (figur[num] == 2) {
+        if (figur[num] == FIGUR_NO_CIRCLE) {
             num--;
         }
 
-        if (figur[num] == 3) {
+        if (figur[num] == FIGUR_END) {
             count_exit = 1;
         }
 
-        if (figur[num] == 1) {
+        if (figur[num] == FIGUR_CIRCLE) {
             circle_pos[num] = fun_pos_cir();
             if (circle_pos[num].radius == 0)
-                    num--;
+                num--;
         }
         num++;
     }
@@ -294,7 +308,6 @@ int main()
         }
         printf("\n");
     }
-
 
     return 0;
 }
