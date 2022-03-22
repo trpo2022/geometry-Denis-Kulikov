@@ -1,16 +1,16 @@
+#include <ctype.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
-#define COMPARISON(FigurdEnter, FigurComparison, FigurLength, result)\
-    {\
-        char* TempString = malloc((FigurLength + 1) * sizeof(char));\
-        strcpy(TempString, FigurdEnter);\
-        TempString[FigurLength] = '\0';\
-        result = !strcmp(TempString, FigurComparison);\
-        free(TempString);\
+#define COMPARISON(FigurdEnter, FigurComparison, FigurLength, result) \
+    {                                                                 \
+        char* TempString = malloc((FigurLength + 1) * sizeof(char));  \
+        strcpy(TempString, FigurdEnter);                              \
+        TempString[FigurLength] = '\0';                               \
+        result = !strcmp(TempString, FigurComparison);                \
+        free(TempString);                                             \
     }
 
 #define N 10 // максимальное количество фигур
@@ -19,8 +19,7 @@
 #define COORDINATES_X_Y 2
 #define MAX_ITERATION 7
 
-
-typedef struct FigurCircle {
+typedef struct figur_circle {
     double point[COORDINATES_X_Y];
     double radius;
 } StructCircle;
@@ -30,89 +29,94 @@ struct info {
     double area;
 };
 
-
-StructCircle InputArg() {
+StructCircle InputArg()
+{
     StructCircle Circle;
-    int num = 0, Arg = 0, Space = 0, ArgCoutn[] = {0, 0, 0}, IsMinus[] = {0, 0, 0}, IsDot[] = {0, 0, 0};
-    int Unfinished = 0, MinusError = 0, DotError = 0, VoidArgError = 0;
+    int num = 0, arg = 0, space = 0, arg_coutn[] = {0, 0, 0},
+        is_minus[] = {0, 0, 0}, is_dot[] = {0, 0, 0};
+    int unfinished = 0, minus_error = 0, dot_error = 0, void_arg_error = 0;
     char input = getchar();
-    char Buffer[L_MAX];
+    char buffer[L_MAX];
     for (int i = 0; i < L_MAX; i++)
-        Buffer[i] = 0;
-    while (input != ')')
-    {
-        if (input == ')' &&  !ArgCoutn[2]) 
-            Unfinished++;
+        buffer[i] = 0;
+    while (input != ')') {
+        if (input == ')' && !arg_coutn[2])
+            unfinished++;
         if (input == ' ')
-            Space++;
-        if (input != ' '){
-            if(input == '-') {
-                if((IsMinus[Arg] || ArgCoutn[Arg]) && Arg != 2){ 
-                    MinusError++;
-                    for(int i = 0; i < num + L_CIRCLE + 2 + Space; i++){
+            space++;
+        if (input != ' ') {
+            if (input == '-') {
+                if ((is_minus[arg] || arg_coutn[Arg]) && arg != 2) {
+                    minus_error++;
+                    for (int i = 0; i < num + L_CIRCLE + 2 + space; i++) {
                         printf(" ");
                     }
                     printf("^ неправильное использование минуса!\n");
                     Circle.radius = -1;
-                    while(getchar() != '\n');
+                    while (getchar() != '\n')
+                        ;
                     return Circle;
                 }
-                if (Arg == 2) {
-                    MinusError++;
-                    for(int i = 0; i < num + L_CIRCLE + 2 + Space; i++){
+                if (arg == 2) {
+                    minus_error++;
+                    for (int i = 0; i < num + L_CIRCLE + 2 + space; i++) {
                         printf(" ");
                     }
                     printf("^ радиус не может быть отрицательным\n");
                     Circle.radius = -1;
-                    while(getchar() != '\n');
+                    while (getchar() != '\n')
+                        ;
                     return Circle;
                 }
-                IsMinus[Arg]++;
-            } else if(input == '.') {
-                if(IsDot[Arg]){
-                    DotError++;
-                    for(int i = 0; i < num + L_CIRCLE + 2 + Space; i++){
+                is_minus[arg]++;
+            } else if (input == '.') {
+                if (is_dot[arg]) {
+                    dot_error++;
+                    for (int i = 0; i < num + L_CIRCLE + 2 + space; i++) {
                         printf(" ");
                     }
                     printf("^ неправильное использование точки!\n");
                     Circle.radius = -1;
-                    while(getchar() != '\n');
+                    while (getchar() != '\n')
+                        ;
                     return Circle;
                 }
-                Buffer[num] = '.';
-                IsDot[Arg]++;
+                buffer[num] = '.';
+                is_dot[arg]++;
                 num++;
-            } else if(input == ',') {
-                if (ArgCoutn[Arg]) {
-                    Buffer[num] = ' ';
-                    Arg++;
-                    if (Arg > 2) {
-                        for(int i = 0; i < num + L_CIRCLE + 2 + Space; i++){
+            } else if (input == ',') {
+                if (arg_coutn[arg]) {
+                    buffer[num] = ' ';
+                    arg++;
+                    if (arg > 2) {
+                        for (int i = 0; i < num + L_CIRCLE + 2 + space; i++) {
                             printf(" ");
                         }
                         printf("^ Лишний токен\n");
                         Circle.radius = -1;
-                        while(getchar() != '\n');
+                        while (getchar() != '\n')
+                            ;
                         return Circle;
                     }
                 } else {
-                    VoidArgError++;
-                    for(int i = 0; i < num + L_CIRCLE + 2 + Space; i++){
+                    void_arg_error++;
+                    for (int i = 0; i < num + L_CIRCLE + 2 + space; i++) {
                         printf(" ");
                     }
                     printf("^ Пустой аргумент!\n");
                     Circle.radius = -1;
-                    while(getchar() != '\n');
+                    while (getchar() != '\n')
+                        ;
                     return Circle;
                 }
                 num++;
-            } else if(isdigit(input)) {
-                ArgCoutn[Arg]++;
-                Buffer[num] = input;
+            } else if (isdigit(input)) {
+                arg_coutn[arg]++;
+                buffer[num] = input;
                 num++;
             } else {
                 if (input == '\n') {
-                    for(int i = 0; i < num + L_CIRCLE + 2 + Space; i++){
+                    for (int i = 0; i < num + L_CIRCLE + 2 + space; i++) {
                         printf(" ");
                     }
                     printf("^ Пустой токен!\n");
@@ -121,23 +125,25 @@ StructCircle InputArg() {
                 }
                 printf("Неверно введены аргументы!\n");
                 Circle.radius = -1;
-                while(getchar() != '\n');
+                while (getchar() != '\n')
+                    ;
                 return Circle;
             }
         }
         input = getchar();
     }
-    if(input == ')') {
-        while(getchar() != '\n');
-        if (!MinusError && !DotError && !VoidArgError && Arg == 2) {
+    if (input == ')') {
+        while (getchar() != '\n')
+            ;
+        if (!minus_error && !dot_error && !void_arg_error && arg == 2) {
             char *YValue, *RadValue;
-            Circle.point[0] = strtod (Buffer, &YValue);
-            if (IsMinus[0])
+            Circle.point[0] = strtod(buffer, &YValue);
+            if (is_minus[0])
                 Circle.point[0] *= -1;
-            Circle.point[1] = strtod (YValue, &RadValue);
-            if (IsMinus[1])
+            Circle.point[1] = strtod(YValue, &RadValue);
+            if (is_minus[1])
                 Circle.point[1] *= -1;
-            Circle.radius = strtod (RadValue, NULL);
+            Circle.radius = strtod(RadValue, NULL);
             return Circle;
         } else {
             printf("Параметры введены не верно.\n");
@@ -152,69 +158,72 @@ StructCircle InputArg() {
 StructCircle InputInfo()
 {
     StructCircle Circle;
-    char FigurCircle[] = "circle", FigurEnter[L_MAX], Answer = 0;
-    int IsCircle;
-    
-    int num = -1, SpaceError = 0, FatalError = 0;
+    char figur_circle[] = "circle", figur_enter[L_MAX], answer = 0;
+    int is_circle;
+
+    int num = -1, space_error = 0, fatal_error = 0;
     do {
         num++;
-        FigurEnter[num] = getchar();
-        COMPARISON(FigurEnter, FigurCircle, L_CIRCLE, IsCircle);
-        if (FigurEnter[num] == '\n' && num > 0) {
+        figur_enter[num] = getchar();
+        COMPARISON(figur_enter, figur_circle, L_CIRCLE, is_circle);
+        if (figur_enter[num] == '\n' && num > 0) {
             printf("Неправильно введена фигура.\n");
             Circle.radius = -1;
             return Circle;
         }
-        if (num > L_CIRCLE ) {
-            while (FigurEnter[num] != '\n')
-                FigurEnter[num] = getchar();
+        if (num > L_CIRCLE) {
+            while (figur_enter[num] != '\n')
+                figur_enter[num] = getchar();
             printf("Неправильно введена фигура.\n");
             Circle.radius = -1;
             return Circle;
         }
-        if (FigurEnter[num] == '\n' && num == 0) {
-            do{
+        if (figur_enter[num] == '\n' && num == 0) {
+            do {
                 printf("Хотите закончить ввод данных? y/n \n");
-                Answer = getchar();
-                if (Answer != 'y' && Answer != 'Y' && Answer != 'n' && Answer != 'N') {
-                    while (getchar() != '\n');
+                answer = getchar();
+                if (answer != 'y' && answer != 'Y' && answer != 'n'
+                    && answer != 'N') {
+                    while (getchar() != '\n')
+                        ;
                 }
-            } while (Answer != 'y' && Answer != 'Y' && Answer != 'n' && Answer != 'N');
-            Answer = tolower(Answer);
+            } while (answer != 'y' && answer != 'Y' && answer != 'n'
+                     && answer != 'N');
+            answer = tolower(answer);
             getchar();
-            if (Answer == 'y'){
+            if (answer == 'y') {
                 printf("Конец ввода.\n");
                 Circle.radius = -2;
                 return Circle;
             }
             num = -1;
-        }        
-        if (IsCircle && FigurEnter[num] != '(' && num >= L_CIRCLE) {
-            if (IsCircle && FigurEnter[num] == ' ') {
-                SpaceError++;
+        }
+        if (is_circle && figur_enter[num] != '(' && num >= L_CIRCLE) {
+            if (is_circle && figur_enter[num] == ' ') {
+                space_error++;
                 num--;
             } else {
-                FatalError++;
+                fatal_error++;
             }
         }
-        if (FigurEnter[num] == '(')
+        if (figur_enter[num] == '(')
             break;
-    } while (FigurEnter[num] != '(' && num < L_MAX);
-    if (IsCircle) {
-        if (SpaceError) 
+    } while (figur_enter[num] != '(' && num < L_MAX);
+    if (is_circle) {
+        if (space_error)
             printf("       ^Лишний отступ перед аргументами.\n");
-        if(FatalError)
-            printf("Фигура не распознана. Ожидается: %s\n", FigurCircle);
-        if (SpaceError || FatalError) {
+        if (fatal_error)
+            printf("Фигура не распознана. Ожидается: %s\n", figur_circle);
+        if (space_error || fatal_error) {
             Circle.radius = -1;
             return Circle;
-        } 
-        if (!SpaceError && !FatalError) 
+        }
+        if (!space_error && !fatal_error)
             return Circle = InputArg(Circle);
     }
 
     Circle.radius = -1;
-    return  Circle;
+    return Circle;
 }
 
 void arg_del(char* arg, int length)
@@ -232,7 +241,7 @@ struct info fun_area_perimetr(StructCircle cir)
     return number;
 }
 
-int fun_check_intersection(StructCircle  Acir, StructCircle Bcir)
+int fun_check_intersection(StructCircle Acir, StructCircle Bcir)
 {
     double temp,
             distance
@@ -267,7 +276,7 @@ int main()
             info_intersection[first_figur][second_figur] = 0;
         }
     }
-    
+
     for (i = 0; i < N; i++) {
         circle_pos[i] = InputInfo();
         if (circle_pos[i].radius == -2) {
@@ -276,7 +285,7 @@ int main()
         }
         if (circle_pos[i].radius == -1)
             i--;
-        if (i == N -1)
+        if (i == N - 1)
             num = i;
     }
 
