@@ -46,9 +46,9 @@ StructCircle InputArg()
             space++;
         if (input != ' ') {
             if (input == '-') {
-                if ((is_minus[arg] || arg_coutn[Arg]) && arg != 2) {
+                if ((is_minus[arg] || arg_coutn[arg]) && arg != 2) {
                     minus_error++;
-                    for (int i = 0; i < num + L_CIRCLE + 2 + space; i++) {
+                    for (int i = 0; i < num + L_CIRCLE + 1 + space; i++) {
                         printf(" ");
                     }
                     printf("^ неправильное использование минуса!\n");
@@ -59,7 +59,7 @@ StructCircle InputArg()
                 }
                 if (arg == 2) {
                     minus_error++;
-                    for (int i = 0; i < num + L_CIRCLE + 2 + space; i++) {
+                    for (int i = 0; i < num + L_CIRCLE + 1 + space; i++) {
                         printf(" ");
                     }
                     printf("^ радиус не может быть отрицательным\n");
@@ -72,7 +72,7 @@ StructCircle InputArg()
             } else if (input == '.') {
                 if (is_dot[arg]) {
                     dot_error++;
-                    for (int i = 0; i < num + L_CIRCLE + 2 + space; i++) {
+                    for (int i = 0; i < num + L_CIRCLE + 1 + space; i++) {
                         printf(" ");
                     }
                     printf("^ неправильное использование точки!\n");
@@ -89,7 +89,7 @@ StructCircle InputArg()
                     buffer[num] = ' ';
                     arg++;
                     if (arg > 2) {
-                        for (int i = 0; i < num + L_CIRCLE + 2 + space; i++) {
+                        for (int i = 0; i < num + L_CIRCLE + 1 + space; i++) {
                             printf(" ");
                         }
                         printf("^ Лишний токен\n");
@@ -100,13 +100,12 @@ StructCircle InputArg()
                     }
                 } else {
                     void_arg_error++;
-                    for (int i = 0; i < num + L_CIRCLE + 2 + space; i++) {
+                    for (int i = 0; i < num + L_CIRCLE + 1 + space; i++) {
                         printf(" ");
                     }
                     printf("^ Пустой аргумент!\n");
                     Circle.radius = -1;
                     while (getchar() != '\n')
-                        ;
                     return Circle;
                 }
                 num++;
@@ -116,7 +115,7 @@ StructCircle InputArg()
                 num++;
             } else {
                 if (input == '\n') {
-                    for (int i = 0; i < num + L_CIRCLE + 2 + space; i++) {
+                    for (int i = 0; i < num + L_CIRCLE + 1 + space; i++) {
                         printf(" ");
                     }
                     printf("^ Пустой токен!\n");
@@ -167,14 +166,14 @@ StructCircle InputInfo()
         figur_enter[num] = getchar();
         COMPARISON(figur_enter, figur_circle, L_CIRCLE, is_circle);
         if (figur_enter[num] == '\n' && num > 0) {
-            printf("Неправильно введена фигура.\n");
+            printf("^Неправильно введена фигура.\n");
             Circle.radius = -1;
             return Circle;
         }
         if (num > L_CIRCLE) {
             while (figur_enter[num] != '\n')
                 figur_enter[num] = getchar();
-            printf("Неправильно введена фигура.\n");
+            printf("^Неправильно введена фигура.\n");
             Circle.radius = -1;
             return Circle;
         }
@@ -268,7 +267,7 @@ int main()
     printf("Уровень: Easy\nПравило ввода данных: тип(координата X, координата "
            "Y, радиус)\nПример: circle(1, 2, 3)\nОдна фигура занимает ровно "
            "одну строку\n"
-           "Чтобы завершить ввод нажмите ещё раз enter после ввода данных\n");
+           "Чтобы завершить ввод нажмите ещё раз enter после ввода данных\n\n");
 
     int info_intersection[N][N];
     for (int first_figur = 0; first_figur < N; first_figur++) {
