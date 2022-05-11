@@ -2,7 +2,7 @@
 #define CTEST_SEGFAULT
 #define CTEST_COLOR_OK
 
-#include "ctest.h"
+#include "../thirdparty/ctest.h"
 
 int main(int argc, const char** argv)
 {
