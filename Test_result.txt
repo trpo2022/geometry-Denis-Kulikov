@@ -1,0 +1,32 @@
+TEST 1/18 figur_checking:name_1 [OK]
+TEST 2/18 figur_checking:name_2 Фигура не распознана. Ожидается "circle"
+[OK]
+TEST 3/18 figur_checking:name_3 [OK]
+TEST 4/18 figur_checking:name_4 Фигура не распознана. Ожидается "circle"
+[OK]
+
+
+TEST 5/18 input_arg:figur_1    [OK]
+TEST 6/18 input_arg:figur_2                  ^ Указаны не все токены
+[OK]
+TEST 7/18 input_arg:figur_3           ^ неправильное использование точки
+[OK]
+TEST 8/18 input_arg:figur_4                ^ радиус не может быть отрицательным
+[OK]
+TEST 9/18 input_arg:figur_5                   ^ Лишний токен
+[OK]
+TEST 10/18 input_arg:figur_6            ^ Пустой токен
+[OK]
+TEST 11/18 input_arg:figur_7     [OK]
+TEST 12/18 input_arg:figur_8            ^ неправильное использование минуса
+[OK]
+TEST 13/18 input_arg:figur_9    [OK]
+
+
+TEST 14/18 fun_area_perimetr:geometry_1 [OK]
+TEST 15/18 fun_area_perimetr:geometry_2 [OK]
+TEST 16/18 fun_check_intersection:intersection_1 [OK]
+TEST 17/18 fun_check_intersection:intersection_2 [OK]
+TEST 18/18 fun_check_intersection:intersection_3 [OK]
+
+RESULTS: 18 tests (18 ok, 0 failed, 0 skipped) ran in 0 ms
