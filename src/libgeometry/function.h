@@ -23,6 +23,6 @@
         printf(" ");
 
 #define L_CIRCLE 6
-#define L_MAX 50
+#define L_MAX 100
 #define COORDINATES_X_Y 2
 #define MAX_ITERATION 7
