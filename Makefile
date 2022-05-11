@@ -63,3 +63,10 @@ run: $(APP_RUN)
 .PHONY: rtest
 rtest: $(TEST_CHECK)
 	$(TEST_CHECK)
+	
+.PHONY: start
+start:
+	make clean
+	make
+	make test
+	make rtest
