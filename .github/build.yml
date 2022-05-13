@@ -3,7 +3,7 @@ name: Build
 on: push
 
 jobs:
-    build:
+  build:
     runs-on: ubuntu-20.04
 
     steps:
@@ -14,6 +14,3 @@ jobs:
 
       - name: Build application
         run: make
-
-      - name: ctest
-        run: bin/test
