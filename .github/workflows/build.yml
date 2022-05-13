@@ -16,7 +16,7 @@ jobs:
         run: make test
         
       - name: ctest check
-        run: bin/test 
+        run: make rtest
       
       - name: Check codestyle
         run: git ls-files *.{c,h} | xargs clang-format -i --verbose && git diff --exit-code
