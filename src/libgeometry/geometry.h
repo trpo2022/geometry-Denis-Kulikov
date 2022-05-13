@@ -1,11 +1,11 @@
 #pragma once
 
+#include "struct.h"
 #include <ctype.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "struct.h"
 
 #define N 10 // максимальное количество фигур
 #define COORDINATES_X_Y 2
