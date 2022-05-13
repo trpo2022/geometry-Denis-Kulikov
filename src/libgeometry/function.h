@@ -1,11 +1,11 @@
 #pragma once
 
+#include "struct.h"
 #include <ctype.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "struct.h"
 
 #define COMPARISON(FigurdEnter, FigurComparison, FigurLength, result) \
     {                                                                 \
@@ -15,11 +15,11 @@
         result = !strcmp(TempString, FigurComparison);                \
         free(TempString);                                             \
     }
-#define ERROR\
-    Circle.radius = -1;\
+#define ERROR           \
+    Circle.radius = -1; \
     return Circle;
-#define SPACE\
-    for (int j = 0; j < num + L_CIRCLE + space + 1; j++)\
+#define SPACE                                            \
+    for (int j = 0; j < num + L_CIRCLE + space + 1; j++) \
         printf(" ");
 
 #define L_CIRCLE 6

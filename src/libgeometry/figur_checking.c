@@ -1,6 +1,6 @@
 #include "function.h"
 
-int figur_checking(char *figur_enter) 
+int figur_checking(char* figur_enter)
 {
     char temp_str[L_CIRCLE + 1], figur_circle[] = "circle";
     if (figur_enter[L_CIRCLE] != '(') {
