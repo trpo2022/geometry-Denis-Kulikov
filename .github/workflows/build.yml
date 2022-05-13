@@ -14,3 +14,7 @@ jobs:
 
       - name: Build application
         run: make
+        
+      - name: ctest
+        run: make test
+        run: bin/test 
